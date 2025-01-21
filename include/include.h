@@ -113,5 +113,15 @@ int counter_clockwise_walk(const int face_id, int u, int v, const int n,
                            vector<vertex>(&primal), face(&cur_face));
 void construct_planar_dual(Fullerene(&F), const int h, const int p);
 
-// From lp.cpp
-// int check_if_sol_valid(const Fullerene(&F), const int h, const int p);
+// From clar.cpp
+void change_res(const int f_id, const face f_info, bool res, Clar_struct(&S));
+bool face_term_cond_met(int *f_id, int f_count, const Fullerene(&F),
+                        Clar_struct(&S), const int h, const int p,
+                        const ofstream out_files_ptr[NFILE]);
+void assign_res_face(int *f_id, int f_count, const Fullerene(&F),
+                     Clar_struct(&S), const int h, const int p,
+                     const ofstream out_files_ptr[NFILE]);
+bool compare_face(const vector<face>(&dual), const int a, const int b);
+void anionic_clar_struct_handler(const Fullerene(&F), Clar_struct(&S),
+                                 const int h, const int p,
+                                 const ofstream out_files_ptr[NFILE]);
