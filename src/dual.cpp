@@ -98,8 +98,10 @@ void construct_planar_dual(Fullerene(&F), const int h, const int p) {
                                              F.dual[face_id]);
           F.dual[face_id].size = face_size;
           // record if face is pent or hex
-          if (face_size == 5) F.pents[p_index++] = face_id;
-          else F.hexs[h_index++] = face_id;
+          if (face_size == 5)
+            F.pents[p_index++] = face_id;
+          else
+            F.hexs[h_index++] = face_id;
         } catch (runtime_error e) {
           throw_error(F.n, h, p, F.id, e.what());
         }
@@ -109,8 +111,8 @@ void construct_planar_dual(Fullerene(&F), const int h, const int p) {
   }
   // record the number of edges in the graph
   if (edge_id != 3 * F.n / 2) {
-    throw_error(F.n, h, p, F.id, "\nIncorrect # of edges: " + 
-                to_string(edge_id));
+    throw_error(F.n, h, p, F.id,
+                "\nIncorrect # of edges: " + to_string(edge_id));
   }
   F.num_edges = edge_id;
   // record the number of faces in the planar dual

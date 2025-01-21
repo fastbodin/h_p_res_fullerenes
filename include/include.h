@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iomanip>
-#include <vector>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -59,13 +59,13 @@ public:
     primal.resize(num_vertices);
     dual.resize(dual_n);
     edges.resize(num_edges);
-    hexs.resize(dual_n-12);
+    hexs.resize(dual_n - 12);
   }
   // Attributes
   int n, dual_n, num_edges, id; // primal, dual, # of edges, and id
-  vector<vertex> primal; // planar graph information
-  vector<face> dual; // planar dual graph information
-  vector<edge> edges; // edge information
+  vector<vertex> primal;        // planar graph information
+  vector<face> dual;            // planar dual graph information
+  vector<edge> edges;           // edge information
   vector<int> pents;
   vector<int> hexs;
 };
@@ -90,14 +90,14 @@ public:
     // resize number of vertices to be covered by structure
     covered_v.resize(num_vertices);
     // resize for number of matching edges
-    match_e.resize((num_vertices - 6*num_res_h - 5*num_res_p)/2);
+    match_e.resize((num_vertices - 6 * num_res_h - 5 * num_res_p) / 2);
   }
   // Attributes
   // num resonant hexagons, resonant pentagons, matching edges
   int num_res_h, num_res_p, num_match_e;
-  vector<int> res_h; // resonant hexagons
-  vector<int> res_p; // resonant pentagons
-  vector<edge> match_e; // matching edges
+  vector<int> res_h;      // resonant hexagons
+  vector<int> res_p;      // resonant pentagons
+  vector<edge> match_e;   // matching edges
   vector<bool> covered_v; // vertices covered by structure
 };
 
@@ -120,4 +120,4 @@ int counter_clockwise_walk(const int face_id, int u, int v, const int n,
 void construct_planar_dual(Fullerene(&F), const int h, const int p);
 
 // From lp.cpp
-//int check_if_sol_valid(const Fullerene(&F), const int h, const int p);
+// int check_if_sol_valid(const Fullerene(&F), const int h, const int p);

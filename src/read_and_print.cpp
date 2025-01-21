@@ -4,8 +4,8 @@
 void throw_error(const int n, const int h, const int p, const int graph_id,
                  string error_message) {
   throw runtime_error("\nError: n = " + to_string(n) + ", h = " + to_string(h) +
-                      ", p = " + to_string(p) + ", graph num = " + 
-                      to_string(graph_id) + error_message);
+                      ", p = " + to_string(p) +
+                      ", graph num = " + to_string(graph_id) + error_message);
 }
 
 // read in fullerene graph and populate some default values into the
