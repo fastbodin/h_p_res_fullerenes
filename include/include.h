@@ -8,7 +8,7 @@ using namespace std;
 // For debugging purposes
 #define DEBUG 0
 #define DEBUG_DUAL 0
-#define DEBUG_CLAR 0
+#define DEBUG_CLAR 1
 
 //------ DO NOT CHANGE BELOW ------
 //-------- HERE BE DRAGONS --------
@@ -66,19 +66,22 @@ public:
   vector<vertex> primal;        // planar graph information
   vector<face> dual;            // planar dual graph information
   vector<edge> edges;           // edge information
-  vector<int> pents;
-  vector<int> hexs;
+  vector<int> pents;            // ids of pentagons
+  vector<int> hexs;             // ids of hexagons
 };
 
 // information on p-anionic Clar resonance structure
 class Clar_struct {
 public:
+  Clar_struct() : p_assigned(12) {}
   // reset values
   void Reset_vals() {
     num_res_h = 0;
     num_res_p = 0;
     num_match_e = 0;
-    fill(covered_v.begin(), covered_v.end(), false); // Reset to all false
+    fill(covered_v.begin(), covered_v.end(), false);
+    fill(p_assigned.begin(), p_assigned.end(), false);
+    fill(h_assigned.begin(), h_assigned.end(), false);
   }
   // fix desired number of resonant hexagons and pentagons
   void Fix_num_res_faces(int h, int p) {
@@ -91,6 +94,7 @@ public:
     covered_v.resize(num_vertices);
     // resize for number of matching edges
     match_e.resize((num_vertices - 6 * num_res_h - 5 * num_res_p) / 2);
+    h_assigned.resize(num_vertices / 2 - 10); // # of hexagons
   }
   // Attributes
   // num resonant hexagons, resonant pentagons, matching edges
@@ -99,6 +103,8 @@ public:
   vector<int> res_p;      // resonant pentagons
   vector<edge> match_e;   // matching edges
   vector<bool> covered_v; // vertices covered by structure
+  vector<int> p_assigned; // # of times pentgon has been assigned
+  vector<int> h_assigned; // # of times hexagon has been assigned
 };
 
 // From read_and_print.cpp

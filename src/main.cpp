@@ -1,25 +1,30 @@
 #include "include.h"
 
 bool pent_term(int *f_index, const Fullerene(&F), Clar_struct(&S), const int h,
-               const int p, ofstream out_files_ptr[NFILE]) {}
+               const int p, ofstream out_files_ptr[NFILE]) {
+  if (p == S.num_res_p) { // correct # of resonant pentagons are assigned
+    // begin assigning resonant hexagons
+    return true;
+  }
+  if (*f_index >= 12)
+    return true; // checked all pentagons
+  return false;  // do not terminate
+}
 
 void assign_res_pent(int *f_index, const Fullerene(&F), Clar_struct(&S),
                      const int h, const int p, ofstream out_files_ptr[NFILE]) {
-  //  // if the termination condition has been met for the faces
-  //  if (f_termination(f_index, F, p, pents_done))
-  //    return;
-  //
-  //  // lets check if *f_index has already been assigned (and is therefore
-  //  non-res) if (cur_sol.assigned_f[*f_index] != 0) {
-  // #if DEBUGCLAR
-  //        printf("Face %d has already been assigned as non-res\n", *f_index);
-  // #endif
-  //        // move onto next pentagon
-  //        assign_res_pent(f_index + 1, f_count + 1, F ,cur_sol, best_sol,
-  //        hex_ids,
-  //                        edge_ids, p, pents_done);
-  //        return;
-  //    }
+  // if the termination condition has been met for the faces
+  if (pent_term(f_index, F, S, h, p, out_files_ptr))
+    return;
+  // check if *f_index has already been assigned (and is therefore non-res)
+  if (S.p_assigned[*f_index] != 0) {
+#if DEBUGCLAR
+    printf("Face %d has already been assigned as non-res\n", F.pents[*f_index]);
+#endif
+    // move onto next pentagon
+    assign_res_pent(f_index + 1, F, S, h, p, out_files_ptr);
+    return;
+  }
   //    // *f_index can therefore be res. We consider each case
   //    // 1) face is included in resonant set
   //    // make face resonant
