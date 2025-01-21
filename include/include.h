@@ -74,7 +74,6 @@ public:
     num_res_h = 0, num_res_p = 0, num_match_e = 0;
     fill(covered_v.begin(), covered_v.end(), false);
     fill(assigned_f.begin(), assigned_f.end(), false);
-    fill(res_f.begin(), res_f.end(), -1);
   }
   // fix desired number of resonant hexagons and pentagons
   void Fix_num_res_faces(int h, int p) { res_f.resize(h + p); }
@@ -90,7 +89,7 @@ public:
   int num_res_h, num_res_p, num_match_e;
   vector<int> res_f;      // resonant faces
   vector<int> assigned_f; // # of times face has been assigned
-  vector<edge> match_e;   // matching edges
+  vector<int[2]> match_e; // matching edges
   vector<int> covered_v;  // vertices covered by structure
 };
 

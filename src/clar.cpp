@@ -1,5 +1,79 @@
 #include "include.h"
 
+void change_match(const int v_id, const int u_id, bool match, Clar_struct(&S)) {
+  // edge is now matching edge
+  if (match) {
+    // note that S.num_match_e acts as an index
+    if (v_id < u_id) {
+      S.match_e[S.num_match_e][0] = v_id;
+      S.match_e[S.num_match_e][1] = u_id;
+    } else {
+      S.match_e[S.num_match_e][1] = v_id;
+      S.match_e[S.num_match_e][0] = u_id;
+    }
+    S.num_match_e += 1;
+    // edge is no longer matching edge
+  } else {
+    S.num_match_e -= 1;
+  }
+}
+
+bool assign_match_edges(int v_id, const Fullerene(&F), Clar_struct(&S),
+                        const ofstream out_files_ptr[NFILE]) {
+  int neighbor;
+  // we have covered every vertex, perfect matching exists
+  if (v_id == F.n)
+    return true;
+
+  // if vertex is covered
+  if (S.covered_v[v_id] > 0) {
+    // go to next vertex
+    return assign_match_edges(v_id + 1, F, S, out_files_ptr);
+  }
+  // vertex is not covered, for it to be a perfect matching, it must be covered
+  for (int i = 0; i < 3; i++) {
+    neighbor = F.primal[v_id].adj_v[i]; // ith neighbor of v_id
+    // check if neighbor is not covered
+    if (S.covered_v[neighbor] == 0) {
+      change_match(v_id, neighbor, true, S); // make edge matching edge
+      // go to  next vertex
+      if (assign_match_edges(v_id + 1, F, S, out_files_ptr)) {
+        change_match(v_id, neighbor, false, S); // remove matching edge
+        // if we found a perfect matching
+        return true;
+      }
+      change_match(v_id, neighbor, false, S); // remove matching edge
+    }
+  }
+  // in every case where v_id is in a matching edge, could not find
+  // a perfect matching
+  return false;
+}
+
+bool face_term_cond_met(int *f_id, int f_count, const Fullerene(&F),
+                        Clar_struct(&S), const int h, const int p,
+                        const ofstream out_files_ptr[NFILE]) {
+  // correct number of pentagons have been assigned
+  if (S.num_res_p == p) {
+    // correct number of hexagons have been assigned
+    if (S.num_res_h == h) {
+#if DEBUG_CLAR
+      print_vec(S.res_f, "Face assignment complete, resonant faces: ");
+#endif
+      // assign matching edges
+      assign_match_edges(0, F, S, out_files_ptr);
+      return true; // terminate
+      // need to assign more resonant hexagons, if there are more to check
+    } else if (f_count < F.dual_n)
+      return false;
+    return true; // no more hexagons to consider, terminate
+    // recall faces are in sorted order with pentagons at front.
+    // if there are more pentagons to consider
+  } else if (f_count < 12)
+    return false; // do not terminate
+  return true;    // no more pentagons to consider, terminate
+}
+
 void change_res(const int f_id, const face f_info, bool res, Clar_struct(&S)) {
   const int f_size = f_info.size; // grab size of face
   // if face is now resonant, everything will be shifted by +1,
@@ -22,29 +96,6 @@ void change_res(const int f_id, const face f_info, bool res, Clar_struct(&S)) {
     S.assigned_f[f_info.adj_f[i]] += shift;
     S.covered_v[f_info.vertices[i]] += shift;
   }
-}
-
-bool face_term_cond_met(int *f_id, int f_count, const Fullerene(&F),
-                        Clar_struct(&S), const int h, const int p,
-                        const ofstream out_files_ptr[NFILE]) {
-  // correct number of pentagons have been assigned
-  if (p == S.num_res_p) {
-    // correct number of hexagons have been assigned
-    if (h == S.num_res_h) {
-#if DEBUG_CLAR
-      print_vec(S.res_f, "Face assignment complete, resonant faces: ");
-#endif
-      // assign matching edges
-      return true; // terminate
-      // need to assign more resonant hexagons, if there are more to check
-    } else if (f_count < F.dual_n)
-      return false;
-    return true; // no more hexagons to consider, terminate
-    // recall faces are in sorted order with pentagons at front.
-    // if there are more pentagons to consider
-  } else if (f_count < 12)
-    return false; // do not terminate
-  return true;    // no more pentagons to consider, terminate
 }
 
 void assign_res_face(int *f_id, int f_count, const Fullerene(&F),
