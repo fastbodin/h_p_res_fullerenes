@@ -89,7 +89,7 @@ public:
   int num_res_h, num_res_p, num_match_e;
   vector<int> res_f;      // resonant faces
   vector<int> assigned_f; // # of times face has been assigned
-  vector<int[2]> match_e; // matching edges
+  vector<edge> match_e;   // matching edges
   vector<int> covered_v;  // vertices covered by structure
 };
 

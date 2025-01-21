@@ -5,11 +5,11 @@ void change_match(const int v_id, const int u_id, bool match, Clar_struct(&S)) {
   if (match) {
     // note that S.num_match_e acts as an index
     if (v_id < u_id) {
-      S.match_e[S.num_match_e][0] = v_id;
-      S.match_e[S.num_match_e][1] = u_id;
+      S.match_e[S.num_match_e].vertices[0] = v_id;
+      S.match_e[S.num_match_e].vertices[1] = u_id;
     } else {
-      S.match_e[S.num_match_e][1] = v_id;
-      S.match_e[S.num_match_e][0] = u_id;
+      S.match_e[S.num_match_e].vertices[1] = v_id;
+      S.match_e[S.num_match_e].vertices[0] = u_id;
     }
     S.num_match_e += 1;
     // edge is no longer matching edge
@@ -61,7 +61,7 @@ bool face_term_cond_met(int *f_id, int f_count, const Fullerene(&F),
       print_vec(S.res_f, "Face assignment complete, resonant faces: ");
 #endif
       // assign matching edges
-      assign_match_edges(0, F, S, out_files_ptr);
+      // assign_match_edges(0, F, S, out_files_ptr);
       return true; // terminate
       // need to assign more resonant hexagons, if there are more to check
     } else if (f_count < F.dual_n)
