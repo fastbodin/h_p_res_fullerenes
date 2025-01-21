@@ -67,7 +67,6 @@ void construct_planar_dual(Fullerene(&F), const int h, const int p) {
   cout << "n = " << F.n << ", p = " << p << ", graph num = " << F.id << endl;
   cout << "Constructing planar dual" << endl;
 #endif
-  int h_index = 0, p_index = 0, face_size;
   int face_id = 0, edge_id = 0, u;
   // for each vertex v
   for (int v = 0; v < F.n; v++) {
@@ -94,14 +93,8 @@ void construct_planar_dual(Fullerene(&F), const int h, const int p) {
       if (F.primal[v].faces[j] == -1) {
         // lets walk the face containing u and v
         try {
-          face_size = counter_clockwise_walk(face_id, v, u, F.n, F.primal,
-                                             F.dual[face_id]);
-          F.dual[face_id].size = face_size;
-          // record if face is pent or hex
-          if (face_size == 5)
-            F.pents[p_index++] = face_id;
-          else
-            F.hexs[h_index++] = face_id;
+          F.dual[face_id].size = counter_clockwise_walk(
+              face_id, v, u, F.n, F.primal, F.dual[face_id]);
         } catch (runtime_error e) {
           throw_error(F.n, h, p, F.id, e.what());
         }

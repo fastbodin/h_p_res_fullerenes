@@ -84,11 +84,10 @@ void print_dual(const int dual_n, const vector<face> dual) {
   }
 }
 
-void print_faces(const vector<int> faces, const int num_f,
-                 const string f_type) {
-  cout << f_type << endl;
-  for (int i = 0; i < num_f; i++) {
-    cout << setw(4) << faces[i];
+void print_vec(const vector<int> vec, const string f_type) {
+  cout << f_type;
+  for (int i = 0; i < vec.size(); i++) {
+    cout << " " << vec[i];
   }
   cout << endl;
 }
