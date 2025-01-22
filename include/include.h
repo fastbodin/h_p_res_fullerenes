@@ -8,7 +8,7 @@ using namespace std;
 // For debugging purposes
 #define DEBUG 1
 #define DEBUG_DUAL 0
-#define DEBUG_CLAR 1
+#define DEBUG_CLAR 0
 
 //------ DO NOT CHANGE BELOW ------
 //-------- HERE BE DRAGONS --------

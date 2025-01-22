@@ -1,25 +1,21 @@
 #include "include.h"
 
 void change_match(const int v_id, const int u_id, bool match, Clar_struct(&S)) {
-  // edge is now matching edge
-  if (match) {
+  // if edge is now match edge, everything will be shifted by +1,
+  // if face is now non-match edge, everything will be shifted by -1
+  const int shift = 2 * match - 1;
+
+  if (match) { // if matching edge
     // note that S.num_match_e acts as an index
-    if (v_id < u_id) {
-      S.match_e[S.num_match_e].vertices[0] = v_id;
-      S.match_e[S.num_match_e].vertices[1] = u_id;
-    } else {
-      S.match_e[S.num_match_e].vertices[1] = v_id;
-      S.match_e[S.num_match_e].vertices[0] = u_id;
-    }
-    S.num_match_e += 1;
-    // edge is no longer matching edge
-  } else {
-    S.num_match_e -= 1;
+    S.match_e[S.num_match_e].vertices[0] = v_id;
+    S.match_e[S.num_match_e].vertices[1] = u_id;
   }
+  S.num_match_e += shift;     // update number of matching edges
+  S.covered_v[v_id] += shift; // update whether verex is covered
+  S.covered_v[u_id] += shift; // update whether vertex is covered
 }
 
-bool assign_match_edges(int v_id, const Fullerene(&F), Clar_struct(&S),
-                        const ofstream out_files_ptr[NFILE]) {
+bool assign_match_edges(int v_id, const Fullerene(&F), Clar_struct(&S)) {
   int neighbor;
   // we have covered every vertex, perfect matching exists
   if (v_id == F.n)
@@ -28,21 +24,31 @@ bool assign_match_edges(int v_id, const Fullerene(&F), Clar_struct(&S),
   // if vertex is covered
   if (S.covered_v[v_id] > 0) {
     // go to next vertex
-    return assign_match_edges(v_id + 1, F, S, out_files_ptr);
+    return assign_match_edges(v_id + 1, F, S);
   }
   // vertex is not covered, for it to be a perfect matching, it must be covered
   for (int i = 0; i < 3; i++) {
     neighbor = F.primal[v_id].adj_v[i]; // ith neighbor of v_id
     // check if neighbor is not covered
     if (S.covered_v[neighbor] == 0) {
+#if DEBUG_CLAR
+      cout << "Match edge: " << v_id << " " << neighbor << endl;
+#endif
       change_match(v_id, neighbor, true, S); // make edge matching edge
-      // go to  next vertex
-      if (assign_match_edges(v_id + 1, F, S, out_files_ptr)) {
+      // go to next vertex
+      if (assign_match_edges(v_id + 1, F, S)) {
         change_match(v_id, neighbor, false, S); // remove matching edge
-        // if we found a perfect matching
+                                                //
+#if DEBUG_CLAR
+        cout << "Non-match edge: " << v_id << " " << neighbor << endl;
+#endif
+        // we found a perfect matching
         return true;
       }
       change_match(v_id, neighbor, false, S); // remove matching edge
+#if DEBUG_CLAR
+      cout << "Non-match edge: " << v_id << " " << neighbor << endl;
+#endif
     }
   }
   // in every case where v_id is in a matching edge, could not find
@@ -57,12 +63,14 @@ bool face_term_cond_met(int *f_id, int f_count, const Fullerene(&F),
   if (S.num_res_p == p) {
     // correct number of hexagons have been assigned
     if (S.num_res_h == h) {
-#if DEBUG_CLAR
       print_vec(S.res_f, "Face assignment complete, resonant faces: ");
+#if DEBUG_CLAR
 #endif
-      // assign matching edges
-      // assign_match_edges(0, F, S, out_files_ptr);
-      return true; // terminate
+      // if perfect matching exists
+      if (assign_match_edges(0, F, S) == false) {
+        cout << "No perfect matching!" << endl;
+      }
+      return true; // regadless, terminate
       // need to assign more resonant hexagons, if there are more to check
     } else if (f_count < F.dual_n)
       return false;
