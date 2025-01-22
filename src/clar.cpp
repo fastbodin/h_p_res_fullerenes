@@ -167,9 +167,8 @@ void assign_res_face(int *f_id, int f_count, const Fullerene(&F),
 bool compare_face(const vector<face>(&dual), const int a, const int b) {
   if (dual[a].size == dual[b].size) {
     return (a < b);
-  } else {
+  } else
     return (dual[a].size < dual[b].size);
-  }
 }
 
 void anionic_clar_struct_handler(const Fullerene(&F), Clar_struct(&S),
@@ -183,9 +182,8 @@ void anionic_clar_struct_handler(const Fullerene(&F), Clar_struct(&S),
   for (int i = 0; i < sorted_f.size(); i++)
     sorted_f[i] = i;
   // custom sort of face ids
-  sort(sorted_f.begin(), sorted_f.end(), [&](int a, int b) { // Sort faces
-    return compare_face(F.dual, a, b);
-  });
+  sort(sorted_f.begin(), sorted_f.end(),
+       [&](int a, int b) { return compare_face(F.dual, a, b); });
 #if DEBUG_CLAR
   print_vec(sorted_f, "Sorted faces: ");
 #endif

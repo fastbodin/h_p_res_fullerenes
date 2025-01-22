@@ -13,9 +13,8 @@ int main(int argc, char *argv[]) {
   ofstream out_files_ptr[NFILE];
   open_out_file(h, p, out_file_names, out_files_ptr); // open out files
 
-  int graph_num = 1;
+  F.id = 1;
   while (read_fullerene(F, h, p)) { // while there are isomers to read in
-    F.id = graph_num;
     construct_planar_dual(F, h, p); // construct planar dual graph
 #if DEBUG
     cout << "Graph number " << graph_num << endl;
@@ -24,7 +23,7 @@ int main(int argc, char *argv[]) {
 #endif
 
     anionic_clar_struct_handler(F, S, h, p, out_files_ptr);
-    graph_num++;
+    F.id++;
   }
   close_files(out_files_ptr);
 }

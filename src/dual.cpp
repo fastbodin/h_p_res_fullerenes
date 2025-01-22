@@ -1,5 +1,4 @@
 #include "include.h"
-#include <stdexcept>
 
 int find_position(const int v, const int u, int v_adj[3]) {
 #if DEBUG_DUAL

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <stdexcept>
 #include <vector>
 
 using namespace std;
@@ -89,8 +90,8 @@ public:
   // num resonant hexagons, resonant pentagons, matching edges
   int num_res_h, num_res_p, num_match_e;
   vector<int> res_f;      // resonant faces
-  vector<int> assigned_f; // # of times face has been assigned
   vector<edge> match_e;   // matching edges
+  vector<int> assigned_f; // # of times face has been assigned
   vector<int> covered_v;  // vertices covered by structure
 };
 
