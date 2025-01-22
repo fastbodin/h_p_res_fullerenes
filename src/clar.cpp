@@ -77,8 +77,8 @@ bool assign_match_edges(int v_id, const Fullerene(&F), Clar_struct(&S)) {
   return false;
 }
 
-bool face_term_cond_met(int *f_id, int f_count, const Fullerene(&F),
-                        Clar_struct(&S), const int h, const int p,
+bool face_term_cond_met(const int f_count, const Fullerene(&F), Clar_struct(&S),
+                        const int h, const int p,
                         ofstream out_files_ptr[NFILE]) {
   // correct number of pentagons have been assigned
   if (S.num_res_p == p) {
@@ -103,7 +103,8 @@ bool face_term_cond_met(int *f_id, int f_count, const Fullerene(&F),
   return true;    // no more pentagons to consider, terminate
 }
 
-void change_res(const int f_id, const face f_info, bool res, Clar_struct(&S)) {
+void change_res(const int f_id, const face f_info, const bool res,
+                Clar_struct(&S)) {
   const int f_size = f_info.size; // grab size of face
   // if face is now resonant, everything will be shifted by +1,
   // if face is now non-resonant, everything will be shifted by -1
@@ -134,7 +135,7 @@ void assign_res_face(int *f_id, int f_count, const Fullerene(&F),
                      Clar_struct(&S), const int h, const int p,
                      ofstream out_files_ptr[NFILE]) {
   // if the termination condition has been met for the faces, stop
-  if (face_term_cond_met(f_id, f_count, F, S, h, p, out_files_ptr))
+  if (face_term_cond_met(f_count, F, S, h, p, out_files_ptr))
     return;
 
 #if DEBUG_CLAR
