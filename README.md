@@ -97,11 +97,11 @@ without a perfect matching. These two choices of resonant pentagons: (0, 19) and
 
 <p align="center">
 <img src="examples/C48_32.png" alt="Isomer $C_{48}$:32"
-width="200">
+width="250">
 <img src="examples/0_19.png" alt="Faces 0 and 19"
-width="200">
+width="250">
 <img src="examples/11_25.png" alt="Faces 11 and 25"
-width="200">
+width="250">
 </p>
 
 ## Citation
