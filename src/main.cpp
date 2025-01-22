@@ -21,7 +21,6 @@ int main(int argc, char *argv[]) {
     print_primal(F.n, F.primal);
     print_dual(F.dual_n, F.dual);
 #endif
-
     anionic_clar_struct_handler(F, S, h, p, out_files_ptr);
     F.id++;
   }
