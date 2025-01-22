@@ -104,8 +104,16 @@ width="250">
 width="250">
 </p>
 
-## Citation
+## Testing your build
+The directory `unit_test/` contains code to test whether your build is
+determining whether the test is executing correctly. It contains `src/`,
+`full/`, a `Makefile`, and `test_build.zsh`. The adjacency list of isomer
+$C_{48}$:3 can be found in `full/full_adj/`. When compiled and run
+(test_build.zsh), the executable will test whether the test preforms correctly
+for every choice of 2 independent pentagons on $C_{48}$:3. See
+`unit_test/C48_3.png` for an image of $C_{48}$:3.
 
+## Citation
 If you use this code in your research, please cite it via:
 
 ```
