@@ -1,5 +1,30 @@
 #include "include.h"
 
+// check anionic Clar structure
+void sanity_check(const Fullerene(&F), const Clar_struct(&S)) {
+  // each vertex in the graph should be covered exactly once by structure
+  vector<int> covered_v(F.n, 0);
+  // check resonant faces
+  for (int i = 0; i < S.num_res_h + S.num_res_p; i++) {
+    face cur_face = F.dual[S.res_f[i]];
+    for (int j = 0; j < cur_face.size; j++) {
+      covered_v[cur_face.vertices[j]] += 1;
+    }
+  }
+  // matching edges
+  for (int i = 0; i < S.num_match_e; i++) {
+    covered_v[S.match_e[i].vertices[0]] += 1;
+    covered_v[S.match_e[i].vertices[1]] += 1;
+  }
+  for (int i = 0; i < F.n; i++) {
+    if (covered_v[i] != 1) {
+      throw_error(F.n, S.num_res_h, S.num_res_p, F.id,
+                  "\nvertex " + to_string(i) + " is covered " +
+                      to_string(covered_v[i]) + " != 1 times");
+    }
+  }
+}
+
 void change_match(const int v_id, const int u_id, const bool match,
                   Clar_struct(&S)) {
   // if edge is now match edge, everything will be shifted by +1,
@@ -22,8 +47,10 @@ void change_match(const int v_id, const int u_id, const bool match,
 bool assign_match_edges(int v_id, const Fullerene(&F), Clar_struct(&S)) {
   int neighbor;
   // we have covered every vertex, perfect matching exists
-  if (v_id == F.n)
+  if (v_id == F.n) {
+    sanity_check(F, S);
     return true;
+  }
 
   // if vertex is covered
   if (S.covered_v[v_id] > 0) {

@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
   ofstream out_files_ptr[NFILE];
   open_out_file(h, p, out_file_names, out_files_ptr); // open out files
 
-  int graph_num = 0;
+  int graph_num = 1;
   while (read_fullerene(F, h, p)) { // while there are isomers to read in
     F.id = graph_num;
     construct_planar_dual(F, h, p); // construct planar dual graph

@@ -115,6 +115,7 @@ int counter_clockwise_walk(const int face_id, int u, int v, const int n,
 void construct_planar_dual(Fullerene(&F), const int h, const int p);
 
 // From clar.cpp
+void sanity_check(const Fullerene(&F), const Clar_struct(&S));
 void change_match(const int v_id, const int u_id, const bool match,
                   Clar_struct(&S));
 bool assign_match_edges(int v_id, const Fullerene(&F), Clar_struct(&S));
