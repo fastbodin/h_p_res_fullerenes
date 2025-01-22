@@ -175,8 +175,8 @@ bool compare_face(const vector<face>(&dual), const int a, const int b) {
 void anionic_clar_struct_handler(const Fullerene(&F), Clar_struct(&S),
                                  const int h, const int p,
                                  ofstream out_files_ptr[NFILE]) {
-  S.Fix_num_vert(F.n); // resize based on size of graph
-  S.Reset_vals();      // reset values
+  S.Fix_num_vert(F.n, h, p); // resize based on size of graph
+  S.Reset_vals();            // reset values
 
   // vector of face ids, these will be sorted
   vector<int> sorted_f(F.dual_n);

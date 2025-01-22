@@ -68,6 +68,12 @@ public:
   vector<edge> edges;           // edge information
 };
 
+template <typename T> void check_vec_resize(T val) {
+  if (val < 0) {
+    throw runtime_error("Bad resize of vec: " + to_string(val));
+  }
+}
+
 // information on p-anionic Clar resonance structure
 class Clar_struct {
 public:
@@ -78,13 +84,17 @@ public:
     fill(assigned_f.begin(), assigned_f.end(), false);
   }
   // fix desired number of resonant hexagons and pentagons
-  void Fix_num_res_faces(int h, int p) { res_f.resize(h + p); }
+  void Fix_num_res_faces(const int h, const int p) {
+    check_vec_resize(h + p);
+    res_f.resize(h + p);
+  }
   // fix number of vertices in the graph
-  void Fix_num_vert(int num_vertices) {
-    // resize for number of matching edges
-    match_e.resize((num_vertices - 6 * num_res_h - 5 * num_res_p) / 2);
-    assigned_f.resize(num_vertices / 2 + 2); // # of faces
-    covered_v.resize(num_vertices);          // # of vertices
+  void Fix_num_vert(const int num_v, const int h, const int p) {
+    check_vec_resize(num_v / 2);
+    check_vec_resize(num_v);
+    match_e.resize(num_v / 2);
+    assigned_f.resize(num_v / 2 + 2); // # of faces
+    covered_v.resize(num_v);          // # of vertices
   }
   // Attributes
   // num resonant hexagons, resonant pentagons, matching edges
