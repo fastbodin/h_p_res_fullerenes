@@ -63,7 +63,7 @@ The flags can be changed from 0 to 1 depending on what you want to debug
 ### To run:
 
 ```
-./build/h_p_res {# of res. hexagons} {# of res. pentagons} < {fullerene files}
+./build/h_p_res {# of res. hexagons} {# of res. pentagons} < {fullerene file}
 ```
 
 ### Output:
@@ -83,12 +83,14 @@ graph_num_h_p <- File containing the graph ids (i.e. their numbering in the
 input file) corresponding to fullerenes in file: res_faces_h_p
 ```
 
-See `output/` for an example output for the 2-anionic Clar number of all
-fullerenes on 30 vertices.
-
 ## Example:
-Isomer $C_{48}$:32 (labelled in accordance with **The Atlas of Fullerenes**)
-is not 2-anionic resonant. There exists two choices of two independent
+See `output/` for an example output that test the 2-anionic-resonant condition
+on all fullerenes on 48 vertices. This output shows that all fullerenes on 48
+vertices, with the exception of isomers: $C_{48}$:3, $C_{48}$:4, and
+$C_{48}$:32 (labelled in accordance with **The Atlas of Fullerenes**), are
+2-anionic-resonant.
+
+For isomer $C_{48}$:32, there exists two choices of two independent
 pentagons, the deletions of whose vertices results in a graph
 without a perfect matching. These two choices of resonant pentagons: (0, 19) and
 (11, 25), indicated by the purple, are shown below.
