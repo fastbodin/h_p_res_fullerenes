@@ -113,10 +113,12 @@ int counter_clockwise_walk(const int face_id, int u, int v, const int n,
 void construct_planar_dual(Fullerene(&F), const int h, const int p);
 
 // From clar.cpp
-void change_res(const int f_id, const face f_info, bool res, Clar_struct(&S));
+void change_match(const int v_id, const int u_id, bool match, Clar_struct(&S));
+bool assign_match_edges(int v_id, const Fullerene(&F), Clar_struct(&S));
 bool face_term_cond_met(int *f_id, int f_count, const Fullerene(&F),
                         Clar_struct(&S), const int h, const int p,
                         const ofstream out_files_ptr[NFILE]);
+void change_res(const int f_id, const face f_info, bool res, Clar_struct(&S));
 void assign_res_face(int *f_id, int f_count, const Fullerene(&F),
                      Clar_struct(&S), const int h, const int p,
                      const ofstream out_files_ptr[NFILE]);
