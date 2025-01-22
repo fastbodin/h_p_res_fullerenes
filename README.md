@@ -94,15 +94,15 @@ without a perfect matching. These two choices of resonant pentagons: (0, 19) and
 (11, 25), indicated by the purple, are shown below.
 
 <p align="center">
-<img src="example/C48_32.png" alt="Isomer $C_{48}$:32"
+<img src="examples/C48_32.png" alt="Isomer $C_{48}$:32"
 width="400">
 </p>
 <p align="center">
-<img src="example/0_19.png" alt="Faces 0 and 19"
+<img src="examples/0_19.png" alt="Faces 0 and 19"
 width="400">
 </p>
 <p align="center">
-<img src="example/11_25.png" alt="Faces 11 and 25"
+<img src="examples/11_25.png" alt="Faces 11 and 25"
 width="400">
 </p>
 
