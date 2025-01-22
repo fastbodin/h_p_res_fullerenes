@@ -8,8 +8,8 @@ int main(int argc, char *argv[]) {
   Clar_struct S;             // anionic Clar structure
   S.Fix_num_res_faces(h, p); // fixed number of resonant hex and pent
 
-  string out_file_names[NFILE] = {"output/hh_pp_res_faces", // define out files
-                                  "output/hh_pp_graph_num"};
+  string out_file_names[NFILE] = {"output/res_faces_", // define out files
+                                  "output/graph_num_"};
   ofstream out_files_ptr[NFILE];
   open_out_file(h, p, out_file_names, out_files_ptr); // open out files
 
