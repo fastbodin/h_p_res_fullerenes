@@ -1,9 +1,9 @@
 # Compiler
-CXX = g++
+CXX = g++-14
 
 # Compiler flags
 INCLUDE = -I include/
-CXX_FLAGS = -std=c++14
+CXX_FLAGS = -std=c++14 -O3
 
 # Source file
 SRCS = src/*.cpp
