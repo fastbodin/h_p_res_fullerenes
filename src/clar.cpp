@@ -1,6 +1,7 @@
 #include "include.h"
 
-void change_match(const int v_id, const int u_id, bool match, Clar_struct(&S)) {
+void change_match(const int v_id, const int u_id, const bool match,
+                  Clar_struct(&S)) {
   // if edge is now match edge, everything will be shifted by +1,
   // if face is now non-match edge, everything will be shifted by -1
   const int shift = 2 * match - 1;
@@ -13,6 +14,9 @@ void change_match(const int v_id, const int u_id, bool match, Clar_struct(&S)) {
   S.num_match_e += shift;     // update number of matching edges
   S.covered_v[v_id] += shift; // update whether verex is covered
   S.covered_v[u_id] += shift; // update whether vertex is covered
+#if DEBUG_CLAR
+  cout << v_id << " " << u_id << " is 'match edge' == " << match << endl;
+#endif
 }
 
 bool assign_match_edges(int v_id, const Fullerene(&F), Clar_struct(&S)) {
@@ -31,24 +35,14 @@ bool assign_match_edges(int v_id, const Fullerene(&F), Clar_struct(&S)) {
     neighbor = F.primal[v_id].adj_v[i]; // ith neighbor of v_id
     // check if neighbor is not covered
     if (S.covered_v[neighbor] == 0) {
-#if DEBUG_CLAR
-      cout << "Match edge: " << v_id << " " << neighbor << endl;
-#endif
       change_match(v_id, neighbor, true, S); // make edge matching edge
       // go to next vertex
       if (assign_match_edges(v_id + 1, F, S)) {
         change_match(v_id, neighbor, false, S); // remove matching edge
-                                                //
-#if DEBUG_CLAR
-        cout << "Non-match edge: " << v_id << " " << neighbor << endl;
-#endif
         // we found a perfect matching
         return true;
       }
       change_match(v_id, neighbor, false, S); // remove matching edge
-#if DEBUG_CLAR
-      cout << "Non-match edge: " << v_id << " " << neighbor << endl;
-#endif
     }
   }
   // in every case where v_id is in a matching edge, could not find
@@ -58,17 +52,17 @@ bool assign_match_edges(int v_id, const Fullerene(&F), Clar_struct(&S)) {
 
 bool face_term_cond_met(int *f_id, int f_count, const Fullerene(&F),
                         Clar_struct(&S), const int h, const int p,
-                        const ofstream out_files_ptr[NFILE]) {
+                        ofstream out_files_ptr[NFILE]) {
   // correct number of pentagons have been assigned
   if (S.num_res_p == p) {
     // correct number of hexagons have been assigned
     if (S.num_res_h == h) {
-      print_vec(S.res_f, "Face assignment complete, resonant faces: ");
 #if DEBUG_CLAR
+      print_vec(S.res_f, "Face assignment complete, resonant faces: ");
 #endif
-      // if perfect matching exists
-      if (assign_match_edges(0, F, S) == false) {
-        cout << "No perfect matching!" << endl;
+      // if no perfect matching exists
+      if (!assign_match_edges(0, F, S)) {
+        print_failed_test(F.id, S.res_f, out_files_ptr);
       }
       return true; // regadless, terminate
       // need to assign more resonant hexagons, if there are more to check
@@ -93,6 +87,9 @@ void change_res(const int f_id, const face f_info, bool res, Clar_struct(&S)) {
     // note that S.num_res_p + S.num_res_h acts as an index
     S.res_f[S.num_res_p + S.num_res_h] = f_id; // add to resonant set
   }
+#if DEBUG_CLAR
+  cout << "Face: " << f_id << " is 'now resonant' == " << res << endl;
+#endif
 
   // update number of resonant faces appropriately
   if (f_size == 5)
@@ -108,7 +105,7 @@ void change_res(const int f_id, const face f_info, bool res, Clar_struct(&S)) {
 
 void assign_res_face(int *f_id, int f_count, const Fullerene(&F),
                      Clar_struct(&S), const int h, const int p,
-                     const ofstream out_files_ptr[NFILE]) {
+                     ofstream out_files_ptr[NFILE]) {
   // if the termination condition has been met for the faces, stop
   if (face_term_cond_met(f_id, f_count, F, S, h, p, out_files_ptr))
     return;
@@ -118,26 +115,20 @@ void assign_res_face(int *f_id, int f_count, const Fullerene(&F),
 #endif
 
   // termination condition was not met, we need to assign more resonant faces
-  // check if f_id has already been assigned (and is therefore non-res)
+  // check if f_id has already been assigned (and is therefore non-resonant)
   if (S.assigned_f[*f_id] > 0) {
     // move onto next face
     assign_res_face(f_id + 1, f_count + 1, F, S, h, p, out_files_ptr);
     return;
   }
 
-  // if the face can be assigned as resonant, make it resonant
+  // if the face can be assigned as resonant
   if ((S.num_res_p < p && F.dual[*f_id].size == 5) ||
       (S.num_res_h < h && F.dual[*f_id].size == 6)) {
-#if DEBUG_CLAR
-    cout << "Face: " << *f_id << " is now resonant" << endl;
-#endif
-    change_res(*f_id, F.dual[*f_id], true, S);
+    change_res(*f_id, F.dual[*f_id], true, S); // make resonat
     // proceed to next face
     assign_res_face(f_id + 1, f_count + 1, F, S, h, p, out_files_ptr);
-#if DEBUG_CLAR
-    cout << "Face: " << *f_id << " is now non-resonant" << endl;
-#endif
-    change_res(*f_id, F.dual[*f_id], false, S);
+    change_res(*f_id, F.dual[*f_id], false, S); // make non-resonant
   }
 
   // proceed to next face with f_id as non-resonant
@@ -156,7 +147,7 @@ bool compare_face(const vector<face>(&dual), const int a, const int b) {
 
 void anionic_clar_struct_handler(const Fullerene(&F), Clar_struct(&S),
                                  const int h, const int p,
-                                 const ofstream out_files_ptr[NFILE]) {
+                                 ofstream out_files_ptr[NFILE]) {
   S.Fix_num_vert(F.n); // resize based on size of graph
   S.Reset_vals();      // reset values
 

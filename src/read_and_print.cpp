@@ -84,6 +84,16 @@ void print_dual(const int dual_n, const vector<face> dual) {
   }
 }
 
+void print_failed_test(const int graph_id, const vector<int> vec,
+                       ofstream out_files_ptr[NFILE]) {
+  out_files_ptr[1] << graph_id << endl;
+  out_files_ptr[0] << vec.size();
+  for (int i = 0; i < vec.size(); i++) {
+    out_files_ptr[0] << " " << vec[i];
+  }
+  out_files_ptr[0] << endl;
+}
+
 void print_vec(const vector<int> vec, const string f_type) {
   cout << f_type;
   for (int i = 0; i < vec.size(); i++) {

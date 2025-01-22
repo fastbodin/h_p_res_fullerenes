@@ -6,7 +6,7 @@
 using namespace std;
 
 // For debugging purposes
-#define DEBUG 1
+#define DEBUG 0
 #define DEBUG_DUAL 0
 #define DEBUG_CLAR 0
 
@@ -99,6 +99,8 @@ void throw_error(const int n, const int h, const int p, const int graph_id,
 bool read_fullerene(Fullerene(&F), const int h, const int p);
 void print_primal(const int n, const vector<vertex> primal);
 void print_dual(const int dual_n, const vector<face> dual);
+void print_failed_test(const int graph_id, const vector<int> vec,
+                       ofstream out_files_ptr[NFILE]);
 void print_vec(const vector<int> vec, const string f_type);
 void print_faces(const vector<int> faces, const int num_f, const string f_type);
 void get_out_name(const int h, const int p, string &fname);
@@ -113,16 +115,17 @@ int counter_clockwise_walk(const int face_id, int u, int v, const int n,
 void construct_planar_dual(Fullerene(&F), const int h, const int p);
 
 // From clar.cpp
-void change_match(const int v_id, const int u_id, bool match, Clar_struct(&S));
+void change_match(const int v_id, const int u_id, const bool match,
+                  Clar_struct(&S));
 bool assign_match_edges(int v_id, const Fullerene(&F), Clar_struct(&S));
 bool face_term_cond_met(int *f_id, int f_count, const Fullerene(&F),
                         Clar_struct(&S), const int h, const int p,
-                        const ofstream out_files_ptr[NFILE]);
+                        ofstream out_files_ptr[NFILE]);
 void change_res(const int f_id, const face f_info, bool res, Clar_struct(&S));
 void assign_res_face(int *f_id, int f_count, const Fullerene(&F),
                      Clar_struct(&S), const int h, const int p,
-                     const ofstream out_files_ptr[NFILE]);
+                     ofstream out_files_ptr[NFILE]);
 bool compare_face(const vector<face>(&dual), const int a, const int b);
 void anionic_clar_struct_handler(const Fullerene(&F), Clar_struct(&S),
                                  const int h, const int p,
-                                 const ofstream out_files_ptr[NFILE]);
+                                 ofstream out_files_ptr[NFILE]);
