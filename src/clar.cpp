@@ -1,5 +1,4 @@
 #include "include.h"
-using namespace std;
 
 // check anionic Clar structure
 void sanity_check(const Fullerene(&F), const Clar_struct(&S)) {
