@@ -89,7 +89,7 @@ public:
     res_f.resize(h + p);
   }
   // fix number of vertices in the graph
-  void Fix_num_vert(const int num_v, const int h, const int p) {
+  void Fix_num_vert(const int num_v) {
     check_vec_resize(num_v / 2);
     check_vec_resize(num_v);
     match_e.resize(num_v / 2);

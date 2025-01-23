@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
 
   Clar_struct S;             // anionic Clar structure
   S.Fix_num_res_faces(h, p); // fixed number of resonant hex and pent
-  S.Fix_num_vert(F.n, h, p); // resize based on size of graph
+  S.Fix_num_vert(F.n);       // resize based on size of graph
   S.Reset_vals();            // reset values
 
   // isomer C48:32 is not 2-anionic resonant
