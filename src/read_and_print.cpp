@@ -104,19 +104,6 @@ void print_vec(const vector<int> vec, const string f_type) {
 
 void get_out_name(const int h, const int p, string &fname) {
   fname += to_string(h) + "_" + to_string(p);
-  //// determine first digit of h
-  // int h1 = h / 10;
-  //// determine last digit of h
-  // int h2 = h % 10;
-  //// determine first digit of p
-  // int p1 = p / 10;
-  //// determine last digit of p
-  // int p2 = p % 10;
-  //// update the file name characters
-  // fname[7] = (char)h1 + '0';
-  // fname[8] = (char)h2 + '0';
-  // fname[10] = (char)p1 + '0';
-  // fname[11] = (char)p2 + '0';
 }
 
 void open_out_file(const int h, const int p, string (&out_file_names)[NFILE],
