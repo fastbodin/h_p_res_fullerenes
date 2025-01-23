@@ -1,4 +1,4 @@
-# A recursion to test for k-resonant and k-anionic-resonant fullerenes
+# A backtrack to test for k-resonant and k-anionic-resonant fullerenes
 
 ## Background
 
@@ -17,7 +17,7 @@ pentagons results in a graph that admits a perfect matching.
 
 ### Testing for k-resonace and k-anionic-resonance
 
-Given a fullerene $F_n$ and fixed integers $h$ and $p$, we use a recursion to
+Given a fullerene $F_n$ and fixed integers $h$ and $p$, we use a backtrack to
 test whether the deletion of the vertices of any $h$ hexagons and $p$
 pentagons, all pairwise independent, from $F_n$ results in a graph that admits
 a perfect matching.
@@ -120,7 +120,7 @@ If you use this code in your research, please cite it via:
 @software{Slobodin_h_p_resonance_2025,
   author =        {Slobodin, A.},
   month =         jan,
-  title =         {{A recursion to test for k-resonant and k-anionic-resonant fullerenes}},
+  title =         {{A backtrack to test for k-resonant and k-anionic-resonant fullerenes}},
   year =          {2025},
   url =           {https://github.com/fastbodin/h_p_res_fullerenes},
 }
